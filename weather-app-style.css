@@ -1,0 +1,14 @@
+.weather-icon{
+	text-align: center;
+}
+.weather-icon img{
+	background: deepskyblue;
+    padding: 10px;
+}
+.weather-icon label, .weather-icon a{
+	font-size: 2em;
+	color:black;
+}
+.weather-icon label:hover, .weather-icon img:hover{
+	cursor: pointer;
+}

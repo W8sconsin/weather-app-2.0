@@ -1,12 +1,25 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="weather-app-style.css">
 </head>
 <body>
-  <p><button onclick="geoFindMe()">Show my location</button></p>
-  <div id="out"></div>
-  <div class="message"></div>
+  <div class="container-fluid">
+    <div class="weather-icon col-sm-2">
+      <div class="image-background" href="#" onclick="geoFindMe()">
+        <div class="row">
+          <img class="icon-image" src="weather.jpg">
+        </div>
+        <div class="row weather-label-background">
+          <label>Weather</label>
+        </div> 
+      </div>   
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div id="out"></div>
+    <div class="message"></div>
+  </div>
 </body>
 
 <script>
@@ -23,8 +36,14 @@
       // It ends by calling a function that gets the weather for this location.
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
+      $(".icon-image").hide();
+      $("label").text("Current Local Weather");
+      $("#out").css({"background":"azure", "padding":"10px", "margin":"0 auto"});
+      $(".weather-icon").css("background","deepskyblue");
 
-      output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+
+      output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + 
+      longitude + '°</p>';
 
       var img = new Image();
       img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
