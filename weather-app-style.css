@@ -12,3 +12,6 @@
 .weather-icon label:hover, .weather-icon img:hover{
 	cursor: pointer;
 }
+#out{
+	text-align: center;
+}
