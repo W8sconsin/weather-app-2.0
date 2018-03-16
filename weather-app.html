@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <a class="alert-primary" id="get-weather" onclick="getWeather();">Get Local Weather</a>
+  <div class="message">
+  </div>
+  <div class="container-fluid">
+  <h1>Hello World!</h1>
+  <p>Resize the browser window to see the effect.</p>
+  <p>The columns will automatically stack on top of each other when the screen is less than 768px wide.</p>
+  <div class="row">
+    <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
+    <div class="col-sm-4" style="background-color:lavenderblush;">.col-sm-4</div>
+    <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
+  </div>
+</div>
+  <div class="container-fluid">
+    <div class="city text-center">
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="weather-conditions right">
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="weather-conditions left">
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div id="out"></div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  function getWeather(){
+    console.log("You're in!");
+    var output = document.getElementById("out");
+
+    if (!navigator.geolocation){
+      output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+      return;
+    } 
+  
+    function success(position) { 
+      // This function gets the latitude and longitude, displays them and a map.
+      // It ends by calling a function that gets the weather for this location.
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+
+      // output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+
+      var img = new Image();
+      img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=100x100&sensor=false";
+
+      output.appendChild(img);
+
+
+      // This is the call to Open Weather Map API for current weather.
+      getAPIData(latitude, longitude);
+
+      $("#get-weather").hide();
+    }
+
+    function error() {
+      output.innerHTML = "Unable to retrieve your location";
+    }
+
+    function getAPIData(latitude, longitude) {
+        $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=5dee5d560c59fdf11b33686537753305&callback=?", function(json){
+        // $(".message").html(JSON.stringify(json));
+        $(".city").html(json.name);
+        $(".weather-conditions.left").html(json.main.temp + " " +
+          json.main.pressure + " " + json.main.humidity + " " + json.wind.speed + " "
+          + json.weather[0].icon);
+        $(".weather-conditions.right").html(json.weather[0].description);
+          // + json.weather[0].main + " " + json.main.temp + " " + json.sys.country + " " + json.name
+      })
+    }
+
+    $(".message").html("<p>Locating&hellip;</p>");
+
+    navigator.geolocation.getCurrentPosition(success, error);
+
+    $(".message").empty();
+  }
+</script>
+
+</body>
+</html>
+
+<!-- <body>
+  <a href="#" onclick="geoFindMe()"><img src="weather.jpg" alt="Weather icon" height="42" width="42"></a>
+  <div id="out"></div>
+  <div class="message"></div>
+</body>
+
+<script>
+  function geoFindMe() {
+    var output = document.getElementById("out");
+
+    if (!navigator.geolocation){
+      output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+      return;
+    }
+
+    function success(position) { 
+      // This function gets the latitude and longitude, displays them and a map.
+      // It ends by calling a function that gets the weather for this location.
+      var latitude  = position.coords.latitude;
+      var longitude = position.coords.longitude;
+
+      output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+
+      var img = new Image();
+      img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+
+      output.appendChild(img);
+
+      // This is the call to Open Weather Map API for current weather.
+      getWeather(latitude, longitude);
+    }
+
+    function error() {
+      output.innerHTML = "Unable to retrieve your location";
+    }
+
+    function getWeather(latitude, longitude) {
+      $.getJSON("http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&APPID=&callback=?", function(json){
+      $(".message").html(JSON.stringify(json));
+    });
+    }
+
+    output.innerHTML = "<p>Locating…</p>";
+
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+</script> -->
